@@ -8,7 +8,7 @@ const {
     tokenService,
     mailService,
     authService
-} = require('../sevices')
+} = require('../services')
 const sse = require('./SSE')
 const { MAX_SESSIONS_COUNT } = require('../../config')
 const { fromBase64 } = require('../helpers')

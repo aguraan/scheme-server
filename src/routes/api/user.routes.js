@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const User = require('../../models/user.model')
-const { validationService } = require('../../sevices')
+const { validationService } = require('../../services')
 
 router.get('/', (req, res, next) => {
 

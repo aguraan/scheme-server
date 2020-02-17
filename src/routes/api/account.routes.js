@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const GoogleAccount = require('../../models/google.model')
-const { validationService } = require('../../sevices')
+const { validationService } = require('../../services')
 
 router.get('/google', (req, res, next) => {
 
