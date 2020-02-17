@@ -21,7 +21,7 @@ const {
 } = require('./config')
 
 const app = express()
-app.set('trust proxy', false) // turn to true on apache server
+app.set('trust proxy', true) // turn to true on apache server
 
 // App Middleware
 
