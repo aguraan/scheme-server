@@ -1,5 +1,5 @@
 const express = require('express')
-const cors = require('cors')
+// const cors = require('cors')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const { join, resolve } = require('path')
@@ -21,12 +21,12 @@ const {
 } = require('./config')
 
 const app = express()
-app.set('trust proxy', true) // turn to true on apache server
+app.set('trust proxy', false) // turn to true on apache server
 
 // App Middleware
 
 app.use(helmet())
-app.use(cors())
+// app.use(cors())
 app.use(morgan('combined'))
 app.use(routerLogger())
 app.use(express.urlencoded({ extended: true }))
