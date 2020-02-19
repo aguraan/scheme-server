@@ -6,7 +6,7 @@ const { join, resolve } = require('path')
 const routerLogger = require('./src/helpers/routerLogger')
 const errorHandler = require('./src/helpers/errorHandler')
 const passport = require('./src/passport.config')
-// const helmet = require('helmet')
+const helmet = require('helmet')
 // const socials = require('./src/socials')
 // const session = require('express-session')
 // const MongoStore = require('connect-mongo')(session)
@@ -25,7 +25,7 @@ app.set('trust proxy', false) // turn to true on apache server
 
 // App Middleware
 
-// app.use(helmet())
+app.use(helmet())
 app.use(cors())
 app.use(morgan('combined'))
 app.use(routerLogger())
