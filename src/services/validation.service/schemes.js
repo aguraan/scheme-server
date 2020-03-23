@@ -13,7 +13,13 @@ const userScheme = {
     email: Joi.string().email(),
     email_verified: Joi.boolean(),
     password: Joi.string(),
-    settings: Joi.object({ dark: Joi.boolean(), theme: Joi.number() })
+    settings: Joi.object({
+        dark: Joi.boolean(),
+        theme: Joi.number(),
+        companyTableSettings: Joi.object({
+            displayHeaders: Joi.array().items(Joi.number().integer())
+        })
+    })
 }
 
 const googleScheme = {

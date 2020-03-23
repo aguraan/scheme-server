@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const Request = require('request-promise')
 const passport = require('passport')
 // const translate = require('../translater')
 const User = require('../models/user.model')
@@ -11,6 +12,7 @@ const {
 } = require('../services')
 const sse = require('./SSE')
 const { MAX_SESSIONS_COUNT } = require('../../config')
+// const { MAX_SESSIONS_COUNT } = require('../../config')
 const { fromBase64 } = require('../helpers')
 
 router.get('/google', 
@@ -126,16 +128,19 @@ router.post('/refresh-token',
             }
             return Promise.all([
                 User.findById(session.user_id),
-                tokenService.createRefreshToken()
+                tokenService.createRefreshToken(),
+                Request('http://ip-api.com/json')
             ])
         })
-        .then(([user, refreshToken]) => {
+        .then(([user, refreshToken, geolocation]) => {
+            const { country, city } = JSON.parse(geolocation)
             const session = Session.create({
                 user_id: user.id,
                 refresh_token: refreshToken,
                 ua: req.get('User-Agent'),
                 fingerprint,
-                ip: req.ip
+                ip: req.ip,
+                geolocation: { country, city }
             })
             return Promise.all([
                 user,
@@ -179,16 +184,19 @@ router.post('/',
             }
             return Promise.all([
                 user,
-                refreshToken
+                refreshToken,
+                Request('http://ip-api.com/json')
             ])
         })
-        .then(([user, refreshToken]) => {
+        .then(([user, refreshToken, geolocation]) => {
+            const { country, city } = JSON.parse(geolocation)
             const session = Session.create({
                 user_id: user.id,
                 refresh_token: refreshToken,
                 ua: req.get('User-Agent'),
                 fingerprint,
-                ip: req.ip
+                ip: req.ip,
+                geolocation: { country, city }
             })
             return Promise.all([
                 user,

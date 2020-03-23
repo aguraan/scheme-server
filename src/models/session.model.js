@@ -23,6 +23,10 @@ const SessionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    geolocation: {
+        country: String,
+        city: String
+    },
     createdAt: {
         type: Date,
         required: true,
@@ -35,5 +39,10 @@ const SessionSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
+SessionSchema.methods.reduce = function() {
+    const { _id, user_id, ua, ip, createdAt, updatedAt, fingerprint, geolocation, refresh_token } = this
+    return { _id, user_id, ua, ip, createdAt, updatedAt, fingerprint, geolocation, refresh_token }
+}
 
 module.exports = mongoose.model('Session', SessionSchema)

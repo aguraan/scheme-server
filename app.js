@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-const { join, resolve } = require('path')
+const { join } = require('path')
 const routerLogger = require('./src/helpers/routerLogger')
 const errorHandler = require('./src/helpers/errorHandler')
 const passport = require('./src/passport.config')
@@ -21,14 +21,19 @@ const {
 } = require('./config')
 
 const app = express()
-app.set('trust proxy', false) // turn to true on apache server
+const index = join(__dirname, 'dist')
+const isProduction = process.env.NODE_ENV === 'production'
+
+app.set('trust proxy', isProduction)
 
 // App Middleware
 
 app.use(helmet())
 app.use(cors())
-app.use(morgan('combined'))
-app.use(routerLogger())
+
+!isProduction && app.use(morgan('combined'))
+!isProduction && app.use(routerLogger())
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 // app.use(cookieParser())
@@ -48,7 +53,7 @@ app.use(express.json())
 app.use(passport.initialize())
 // app.use(socials())
 // app.use(passport.session())
-app.use(express.static(join(__dirname, 'dist')))
+app.use(express.static( index ))
 
 // Routes
 
@@ -57,7 +62,7 @@ app.use('/', require('./src/routes'))
 // Error handler
 app.use(errorHandler())
 app.use('*', (req, res) => {
-    res.sendFile(resolve(__dirname, 'dist', 'index.html'))
+    res.sendFile( index )
 })
 
 // Connect to DataBase

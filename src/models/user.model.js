@@ -33,6 +33,12 @@ const UserSchema = new mongoose.Schema({
         theme: {
             type: Number,
             default: 0
+        },
+        companyTableSettings: {
+            displayHeaders: {
+                type: [{ type: Number }],
+                default: () => null
+            }
         }
     },
     created: {
